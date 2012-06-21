@@ -1,0 +1,12 @@
+---
+- hosts: webservers
+  user: root
+
+  vars_files
+    - ../global_varibles.yml
+    - vars/main.yml
+  tasks:
+    - include: tasks/setup.yml
+  handlers:
+    - include: handlers/main.yml
+

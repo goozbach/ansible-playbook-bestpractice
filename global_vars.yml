@@ -1,0 +1,4 @@
+---
+is_cent6: "'$ansible_distribution' == 'CentOS' and '$ansible_distribution_version'.startswith('6')"
+is_cent5: "'$ansible_distribution' == 'CentOS' and '$ansible_distribution_version'.startswith('5')"
+ansible_master: 10.0.0.10

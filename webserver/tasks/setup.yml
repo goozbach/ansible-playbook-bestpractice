@@ -1,0 +1,42 @@
+---
+# install package
+- name: install httpd package
+  action: yum pkg=httpd state=latest
+  notify:
+    - restart httpd
+
+# ensure enabled
+- name: enable httpd
+  action: service name=httpd enable=yes
+
+# ensure configs
+- name: ensure httpd conf file is installed
+  action: copy src=files/etc_httpd_conf_httpd.conf dest=/etc/httpd/conf/httpd.conf
+  notify:
+    - reload httpd
+
+- name: ensure centos5 conf file is installed only on centos5
+  action: copy src=files/centos5.conf dest=/etc/httpd/conf.d/centos5.conf
+  only_if: '$is_centos5'
+  notify:
+    - reload httpd
+
+- name: ensure centos6 conf file is installed only on centos6
+  action: copy src=files/centos6.conf dest=/etc/httpd/conf.d/centos6.conf
+  only_if: '$is_centos6'
+  notify:
+    - reload httpd
+
+- name: ensure the web app config file is installed
+  action template src=templates/var_www_app.conf dest=/var/www/app.conf owner=apache group=apache mode=600
+  notify
+    - reload httpd
+
+# ensure started
+- name: enable httpd
+  action: service name=httpd state=started
+
+# deploy webapp
+- name: checkout the current version of the web app using git
+  action git repo=git@localhost:my-webapp.git dest=/var/www/html/ branch=master version=HEAD
+

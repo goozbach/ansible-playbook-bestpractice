@@ -1,0 +1,3 @@
+---
+is_firstserver: "'$ansible_fqdn' == 'foo1.example.com'"
+
