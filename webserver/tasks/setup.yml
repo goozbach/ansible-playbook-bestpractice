@@ -16,20 +16,20 @@
     - reload httpd
 
 - name: ensure centos5 conf file is installed only on centos5
-  action: copy src=files/centos5.conf dest=/etc/httpd/conf.d/centos5.conf
+  action: copy src=files/etc_httpd_conf.d_cent5.conf dest=/etc/httpd/conf.d/centos5.conf
   only_if: '$is_centos5'
   notify:
     - reload httpd
 
 - name: ensure centos6 conf file is installed only on centos6
-  action: copy src=files/centos6.conf dest=/etc/httpd/conf.d/centos6.conf
+  action: copy src=files/etc_httpd_conf.d_cent6.conf dest=/etc/httpd/conf.d/centos6.conf
   only_if: '$is_centos6'
   notify:
     - reload httpd
 
 - name: ensure the web app config file is installed
-  action template src=templates/var_www_app.conf dest=/var/www/app.conf owner=apache group=apache mode=600
-  notify
+  action: template src=templates/var_www_app.conf dest=/var/www/app.conf owner=apache group=apache mode=600
+  notify:
     - reload httpd
 
 # ensure started
@@ -38,5 +38,5 @@
 
 # deploy webapp
 - name: checkout the current version of the web app using git
-  action git repo=git@localhost:my-webapp.git dest=/var/www/html/ branch=master version=HEAD
+  action: git repo=https://github.com/goozbach/ansible-webapp.git dest=/var/www/html/ branch=master version=HEAD
 
